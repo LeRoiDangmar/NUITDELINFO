@@ -8,7 +8,7 @@ import InclusiveGame from "@/components/games/InclusiveGame";
 import ResponsibleGame from "@/components/games/ResponsibleGame";
 import DurableGame from "@/components/games/DurableGame";
 import LaserGame from "@/components/games/LaserGame";
-import { GameSlot } from "@/types/types";
+import { GameSlot } from "@/types/Types";
 import SnakeGame from "@/components/SnakeGame";
 import { useSecretCode } from "@/hooks/use-secret-code";
 import { toast } from "@/hooks/use-toast";

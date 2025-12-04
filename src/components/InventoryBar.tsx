@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import InventorySlot from "./InventorySlot";
-import { GameSlot } from "@/types/types";
+import { GameSlot } from "@/types/Types";
 
 interface InventoryBarProps {
   onSlotClick: (slot: GameSlot) => void;
