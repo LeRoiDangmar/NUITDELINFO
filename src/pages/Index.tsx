@@ -12,7 +12,7 @@ import { GameSlot } from "@/types/Types";
 import SnakeGame from "@/components/SnakeGame";
 import { useSecretCode } from "@/hooks/use-secret-code";
 import { toast } from "@/hooks/use-toast";
-
+import { LaserGameProvider, useLaserGame } from "@/components/context/LaserGameContext";
 
 const gameConfig = {
   L:{
@@ -39,6 +39,8 @@ const gameConfig = {
 };
 
 const Index = () => {
+  //const { score, updateScore } = useLaserGame();
+
   const [activeGame, setActiveGame] = useState<GameSlot>(null);
   const [completedGames, setCompletedGames] = useState<Set<GameSlot>>(new Set());
   const [showSnake, setShowSnake] = useState(false);

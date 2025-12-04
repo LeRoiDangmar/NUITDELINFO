@@ -20,12 +20,6 @@ const slots = [
     color: '#f87171', // red
   },
   {
-    letter: null,
-    label: null,
-    description: null,
-    color: '#f87171', // red
-  },
-  {
     letter: 'N',
     label: 'NUMÉRIQUE',
     description: 'La résistance numérique face aux géants du web. Logiciels libres et souveraineté technologique.',
