@@ -173,16 +173,17 @@ const Index = () => {
 
       {showSnake && <SnakeGame onClose={() => setShowSnake(false)} />}
 
-      <footer className="fixed bottom-24 left-0 right-0 z-30 text-center">
+      {/* Footer */}
+      <footer className="fixed bottom-[320px] left-0 right-0 z-30 text-center">
         <a
           href="https://nird.forge.apps.education.fr/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[8px] text-muted-foreground hover:text-screen transition-colors underline"
+          className="pixel-button px-6 py-4 bg-terminal border-4 border-forest-light text-forest-light hover:bg-forest-light hover:text-terminal transition-colors text-[10px] font-bold uppercase tracking-wider shadow-pixel"
         >
-          [ Rejoindre la démarche NIRD → ]
+          [ Rejoindre NIRD ]
         </a>
-      </footer>
+</footer>
     </main>
   );
 };
