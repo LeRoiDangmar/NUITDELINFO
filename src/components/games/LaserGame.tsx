@@ -1,43 +1,172 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { ActiveLaserGamePopup, LaserGamePopupType } from "@/types/Types";
+import { useLaserGame } from "../context/LaserGameContext";
+import LaserGamePopup from "./popup/LaserGamePopup";
+
+import reactImage from "@/assets/popups/react.png";
+
 
 interface LaserProps {
   onComplete: () => void;
 }
 
 const LaserGame = ({ onComplete }: LaserProps) => {
-    const [isFiring, setIsFiring] = useState(false);
-    const laserRef = useRef<HTMLDivElement>(null);
-    
-    const handleFire = () => {
-        if (isFiring) return;
-        setIsFiring(true);
-        setTimeout(() => {
-        setIsFiring(false);
-        onComplete();
-        }, 500); // Laser firing duration
-    };
-    
+    const { popupList, setPopupList } = useLaserGame();
+
+    const [availablePopups, setAvailablePopups] = useState<LaserGamePopupType[]>([
+        {
+            id: 1,
+            height: 100,
+            width: 100,
+            title: "Pack Office",
+            desc: "Ta licence office arrive à expiration, renouvèle la vite !",
+            isEvil: true,
+            image: reactImage
+        },
+        {
+            id: 2,
+            height: 100,
+            width: 100,
+            title: "Windows Update",
+            desc: "Votre système d'exploitation a besoin de se mettre à jour.",
+            isEvil: true,
+            image: reactImage
+        },
+        {
+            id: 3,
+            height: 100,
+            width: 100,
+            title: "Norton 360",
+            desc: "Votre système n'est pas protégé, installez Norton 360 maintenant !",
+            isEvil: true,
+            image: reactImage
+        },
+        {
+            id: 4,
+            height: 100,
+            width: 100,
+            title: "Google Drive",
+            desc: "Votre espacee de stockage est presque saturé ! Augmentez sa taille en souscrivant à un abonnement.",
+            isEvil: true,
+            image: reactImage
+        },
+        {
+            id: 5,
+            height: 100,
+            width: 100,
+            title: "Linux",
+            desc: "Rejoignez des millions d'utilisateurs et optez pour l'OS open source le plus populaire !",
+            isEvil: false,
+            image: reactImage
+        },
+        {
+            id: 6,
+            height: 100,
+            width: 100,
+            title: "Open Office",
+            desc: "Une alternative gratuite et open source à Microsoft Office.",
+            isEvil: false,
+            image: reactImage
+        },
+        {
+            id: 7,
+            height: 100,
+            width: 100,
+            title: "VLC Media Player",
+            desc: "Un lecteur multimédia gratuit et open source qui prend en charge une large gamme de formats audio et vidéo.",
+            isEvil: false,
+            image: reactImage
+        },
+        {
+            id: 8,
+            height: 100,
+            width: 100,
+            title: "GIMP",
+            desc: "Un logiciel de retouche d'image gratuit et open source, souvent comparé à Adobe Photoshop.",
+            isEvil: false,
+            image: reactImage
+        },
+        {
+            id: 9,
+            height: 100,
+            width: 100,
+            title: "Mozilla Firefox",
+            desc: "Un navigateur web open source axé sur la confidentialité et la personnalisation.",
+            isEvil: false,
+            image: reactImage
+        },
+        {
+            id: 10,
+            height: 100,
+            width: 100,
+            title: "Suite Adobe",
+            desc: "Optez pour une licence professionnelle pour accéder à l'ensemble des outils créatifs d'Adobe.",
+            isEvil: true,
+            image: reactImage
+        },
+        {
+            id: 11,
+            height: 100,
+            width: 100,
+            title: "IOS",
+            desc: "Découvrez l'univers Apple avec iOS, le système d'exploitation mobile le plus fermé au monde.",
+            isEvil: true,
+            image: reactImage
+        }
+    ])
+
+    const selectRandomPopup = () => {
+        if (availablePopups.length === 0) return null;
+        const randomIndex = Math.floor(Math.random() * availablePopups.length);
+        return availablePopups[randomIndex];
+    }
+
+    let timeElapsed = 0;
+    let sanityLeft = 1000;    
+
+
+    //loop every second unitl sanityLeft is 0
+    const gameLoop = () => {
+        const interval = setInterval(() => {
+            timeElapsed += 1;
+            //every 2 seconds add a new popup
+            if (timeElapsed % 2 === 0) {
+                const newPopup = selectRandomPopup();
+                if (newPopup) {
+                    const activePopup: ActiveLaserGamePopup = {
+                        ...newPopup,
+                        x: Math.random() * (window.innerWidth - newPopup.width),
+                        y: Math.random() * (window.innerHeight - newPopup.height),
+                        pointLoss: newPopup.isEvil ? 50 : -30,
+                        attackDelay: 3,
+                    }
+                    setPopupList((prev) => [...prev, activePopup]);
+                }
+            }
+            
+            //end game if sanityLeft is 0
+            if (sanityLeft <= 0) {
+                clearInterval(interval);
+
+                //display user score and wait for close
+                onComplete();
+            }
+        }, 1000);
+    }
+
+    gameLoop();
+
     return (
-        <div className="relative w-full h-full flex items-center justify-center">
-        <button
-            onClick={handleFire}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none"
-        >
-            Fire Laser
-        </button>
-        {isFiring && (
-            <motion.div
-            ref={laserRef}
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            exit={{ scaleY: 0 }}
-            transition={{ duration: 0.5 }}
-            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2 h-full bg-red-500"
-            />
-        )}
-        </div>
-    );
+        <>
+            {popupList.map((popup) => (
+                <LaserGamePopup
+                    key={popup.id}
+                    popup={popup}
+                />
+            ))}
+        </>
+    )
 }
 
 export default LaserGame;
