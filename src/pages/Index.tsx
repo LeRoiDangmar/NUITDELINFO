@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import PixelBackground from "@/components/PixelBackground";
 import InventoryBar from "@/components/InventoryBar";
@@ -7,6 +7,9 @@ import NumericalGame from "@/components/games/NumericalGame";
 import InclusiveGame from "@/components/games/InclusiveGame";
 import ResponsibleGame from "@/components/games/ResponsibleGame";
 import DurableGame from "@/components/games/DurableGame";
+import SnakeGame from "@/components/SnakeGame";
+import { useSecretCode } from "@/hooks/use-secret-code";
+import { toast } from "@/hooks/use-toast";
 
 type GameSlot = 'N' | 'I' | 'R' | 'D' | null;
 
@@ -32,6 +35,19 @@ const gameConfig = {
 const Index = () => {
   const [activeGame, setActiveGame] = useState<GameSlot>(null);
   const [completedGames, setCompletedGames] = useState<Set<GameSlot>>(new Set());
+  const [showSnake, setShowSnake] = useState(false);
+  const { isUnlocked, reset } = useSecretCode(['n', 'i', 'r', 'd']);
+
+  useEffect(() => {
+    if (isUnlocked) {
+      setShowSnake(true);
+      toast({
+        title: "🐍 Code secret débloqué !",
+        description: "Le jeu Snake est maintenant disponible !",
+      });
+      reset();
+    }
+  }, [isUnlocked, reset]);
 
   const handleSlotClick = (slot: GameSlot) => {
     setActiveGame(slot);
@@ -142,6 +158,9 @@ const Index = () => {
           <GameComponent onComplete={handleGameComplete} />
         </GameModal>
       )}
+
+      {/* Snake Game */}
+      {showSnake && <SnakeGame onClose={() => setShowSnake(false)} />}
 
       {/* Footer */}
       <footer className="fixed bottom-24 left-0 right-0 z-30 text-center">
