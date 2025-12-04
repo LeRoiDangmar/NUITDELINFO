@@ -12,28 +12,31 @@ import { GameSlot } from "@/types/Types";
 import SnakeGame from "@/components/SnakeGame";
 import { useSecretCode } from "@/hooks/use-secret-code";
 import { toast } from "@/hooks/use-toast";
-import { LaserGameProvider, useLaserGame } from "@/components/context/LaserGameContext";
+import {
+  LaserGameProvider,
+  useLaserGame,
+} from "@/components/context/LaserGameContext";
 
 const gameConfig = {
-  L:{
-    title:  'La zerguèm de la nuit',
+  L: {
+    title: "La zerguèm de la nuit",
     component: LaserGame,
   },
 
   N: {
-    title: 'nird.exe - Résistance Numérique',
+    title: "nird.exe - Résistance Numérique",
     component: NumericalGame,
   },
   I: {
-    title: 'nird.exe - Réseau Inclusif',
+    title: "nird.exe - Réseau Inclusif",
     component: InclusiveGame,
   },
   R: {
-    title: 'nird.exe - Atelier Réparation',
+    title: "nird.exe - Atelier Réparation",
     component: ResponsibleGame,
   },
   D: {
-    title: 'nird.exe - Sobriété Énergétique',
+    title: "nird.exe - Sobriété Énergétique",
     component: DurableGame,
   },
 };
@@ -42,9 +45,11 @@ const Index = () => {
   //const { score, updateScore } = useLaserGame();
 
   const [activeGame, setActiveGame] = useState<GameSlot>(null);
-  const [completedGames, setCompletedGames] = useState<Set<GameSlot>>(new Set());
+  const [completedGames, setCompletedGames] = useState<Set<GameSlot>>(
+    new Set()
+  );
   const [showSnake, setShowSnake] = useState(false);
-  const { isUnlocked, reset } = useSecretCode(['n', 'i', 'r', 'd']);
+  const { isUnlocked, reset } = useSecretCode(["n", "i", "r", "d"]);
 
   useEffect(() => {
     if (isUnlocked) {
@@ -63,7 +68,7 @@ const Index = () => {
 
   const handleGameComplete = () => {
     if (activeGame) {
-      setCompletedGames(prev => new Set([...prev, activeGame]));
+      setCompletedGames((prev) => new Set([...prev, activeGame]));
     }
     setActiveGame(null);
   };
@@ -78,7 +83,6 @@ const Index = () => {
     <main className="min-h-screen relative overflow-hidden">
       <PixelBackground />
 
-      {/* Header */}
       <header className="relative z-10 pt-8 pb-4 text-center">
         <motion.div
           initial={{ y: -50, opacity: 0 }}
@@ -94,7 +98,6 @@ const Index = () => {
         </motion.div>
       </header>
 
-      {/* Main content */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 py-8">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
@@ -111,26 +114,25 @@ const Index = () => {
                 &gt; Bienvenue dans le Village Numérique Résistant !
               </p>
               <p className="text-[10px] text-muted-foreground leading-relaxed mb-3">
-                Face aux géants du numérique, notre communauté
-                construit un avenir technologique différent...
+                Face aux géants du numérique, notre communauté construit un
+                avenir technologique différent...
               </p>
               <p className="text-[10px] text-screen leading-relaxed">
-                Explorez les 4 piliers du projet NIRD en cliquant
-                sur les lettres de l'inventaire ci-dessous.
+                Explorez les 4 piliers du projet NIRD en cliquant sur les
+                lettres de l'inventaire ci-dessous.
               </p>
               <span className="inline-block w-2 h-4 bg-forest-light animate-blink ml-1" />
             </div>
           </div>
 
-          {/* Progress indicator */}
           <div className="flex justify-center gap-2 mb-4">
-            {(['L', 'N', 'I', 'R', 'D'] as const).map(letter => (
+            {(["L", "N", "I", "R", "D"] as const).map((letter) => (
               <div
                 key={letter}
                 className={`w-3 h-3 ${
-                  completedGames.has(letter) 
-                    ? 'bg-forest-light' 
-                    : 'bg-terminal-light'
+                  completedGames.has(letter)
+                    ? "bg-forest-light"
+                    : "bg-terminal-light"
                 }`}
               />
             ))}
@@ -153,10 +155,8 @@ const Index = () => {
         </motion.div>
       </section>
 
-      {/* Inventory Bar */}
       <InventoryBar onSlotClick={handleSlotClick} />
 
-      {/* Game Modal */}
       {activeGame && GameComponent && (
         <GameModal
           isOpen={!!activeGame}
@@ -167,10 +167,8 @@ const Index = () => {
         </GameModal>
       )}
 
-      {/* Snake Game */}
       {showSnake && <SnakeGame onClose={() => setShowSnake(false)} />}
 
-      {/* Footer */}
       <footer className="fixed bottom-24 left-0 right-0 z-30 text-center">
         <a
           href="https://nird.forge.apps.education.fr/"
