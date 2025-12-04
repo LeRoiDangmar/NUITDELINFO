@@ -43,8 +43,8 @@ const GameModal = ({
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             style={{
-              width: typeof width === "number" ? `${width}px` : width,
-              height: typeof height === "number" ? `${height}px` : height,
+              width: typeof width === "number" ? `${width}vw` : width,
+              height: typeof height === "number" ? `${height}vh` : height,
             }}
             className="relative w-full h-full md:w-[600px] md:h-auto md:max-h-[80vh] overflow-hidden shadow-2xl"
           >

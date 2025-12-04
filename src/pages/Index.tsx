@@ -21,8 +21,8 @@ const gameConfig = {
   L: {
     title: "La zerguèm de la nuit",
     component: LaserGame,
-    height: 800,
-    width: 1200,
+    height: 90,
+    width: 90,
   },
 
   N: {
@@ -164,8 +164,8 @@ const Index = () => {
           isOpen={!!activeGame}
           onClose={handleCloseModal}
           title={gameConfig[activeGame].title}
-          width={gameConfig[activeGame].width ?? 600}
-          height={gameConfig[activeGame].height ?? 400}
+          width={gameConfig[activeGame].width ?? 30}
+          height={gameConfig[activeGame].height ?? 50}
         >
           <GameComponent onComplete={handleGameComplete} />
         </GameModal>
@@ -183,7 +183,7 @@ const Index = () => {
         >
           [ Rejoindre NIRD ]
         </a>
-</footer>
+      </footer>
     </main>
   );
 };
