@@ -14,26 +14,26 @@ const GameModal = ({ isOpen, onClose, title, children }: GameModalProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-0">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-terminal/80 z-50"
+            className="absolute inset-0 bg-terminal/80"
             onClick={onClose}
           />
 
           <motion.div
             drag
-            dragListener={false} // Empêche de draguer en cliquant n'importe où
-            dragControls={dragControls} // Lie le mouvement aux contrôles
-            dragMomentum={false} // Arrête le mouvement dès qu'on relâche (pas d'inertie)
-            dragElastic={0} // Pas d'effet élastique sur les bords
+            dragListener={false}
+            dragControls={dragControls}
+            dragMomentum={false}
+            dragElastic={0}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[600px] md:max-h-[80vh] z-50 overflow-hidden shadow-2xl"
+            className="relative w-full h-full md:w-[600px] md:h-auto md:max-h-[80vh] overflow-hidden shadow-2xl"
           >
             <div className="win95-window h-full flex flex-col">
               <div
@@ -68,7 +68,7 @@ const GameModal = ({ isOpen, onClose, title, children }: GameModalProps) => {
               </div>
             </div>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   );
