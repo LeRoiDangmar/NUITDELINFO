@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Pixel Art Retro Palette */
+    --background: 220 25% 8%;
+    --foreground: 120 20% 85%;
+
+    --card: 220 20% 12%;
+    --card-foreground: 120 20% 85%;
+
+    --popover: 30 30% 15%;
+    --popover-foreground: 120 20% 85%;
+
+    --primary: 120 45% 35%;
+    --primary-foreground: 120 20% 95%;
+
+    --secondary: 30 45% 30%;
+    --secondary-foreground: 40 30% 90%;
+
+    --muted: 220 15% 18%;
+    --muted-foreground: 200 10% 60%;
+
+    --accent: 200 75% 45%;
+    --accent-foreground: 200 90% 95%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 120 30% 25%;
+    --input: 220 20% 15%;
+    --ring: 120 50% 40%;
+
+    --radius: 0px;
+
+    /* Custom colors */
+    --forest: 120 40% 25%;
+    --forest-light: 120 50% 45%;
+    --earth: 30 50% 30%;
+    --earth-light: 35 45% 45%;
+    --terminal: 0 0% 15%;
+    --terminal-light: 0 0% 25%;
+    --screen: 200 80% 50%;
+    --screen-glow: 200 100% 60%;
+    --warning: 45 90% 50%;
+    --success: 120 60% 40%;
+
+    /* Windows 95 style */
+    --win95-bg: 0 0% 75%;
+    --win95-title: 220 75% 45%;
+    --win95-border-light: 0 0% 95%;
+    --win95-border-dark: 0 0% 35%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-pixel;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+}
+
+@layer utilities {
+  .pixel-border {
+    box-shadow: 
+      inset -4px -4px 0px 0px hsl(var(--win95-border-dark)),
+      inset 4px 4px 0px 0px hsl(var(--win95-border-light));
+  }
+
+  .pixel-border-inset {
+    box-shadow: 
+      inset 4px 4px 0px 0px hsl(var(--win95-border-dark)),
+      inset -4px -4px 0px 0px hsl(var(--win95-border-light));
+  }
+
+  .glow-screen {
+    text-shadow: 0 0 10px hsl(var(--screen-glow)), 0 0 20px hsl(var(--screen-glow));
+  }
+
+  .glow-forest {
+    text-shadow: 0 0 8px hsl(var(--forest-light)), 0 0 16px hsl(var(--forest-light));
+  }
+
+  .pixel-shadow {
+    box-shadow: 4px 4px 0px 0px hsl(var(--terminal));
+  }
+
+  .scanlines {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.1) 2px,
+      rgba(0, 0, 0, 0.1) 4px
+    );
+  }
+}
+
+@layer components {
+  .inventory-slot {
+    @apply relative w-16 h-16 md:w-20 md:h-20 bg-terminal flex items-center justify-center cursor-pointer transition-all duration-150;
+    box-shadow: 
+      inset -3px -3px 0px 0px hsl(var(--terminal-light)),
+      inset 3px 3px 0px 0px hsl(0 0% 5%),
+      0 0 0 3px hsl(var(--earth));
+  }
+
+  .inventory-slot:hover {
+    @apply bg-terminal-light;
+    box-shadow: 
+      inset -3px -3px 0px 0px hsl(var(--terminal)),
+      inset 3px 3px 0px 0px hsl(0 0% 30%),
+      0 0 0 3px hsl(var(--forest-light)),
+      0 0 20px hsl(var(--forest-light) / 0.5);
+  }
+
+  .inventory-slot:active {
+    transform: scale(0.95);
+  }
+
+  .win95-window {
+    @apply bg-win95-bg;
+    box-shadow: 
+      inset -2px -2px 0px 0px hsl(var(--win95-border-dark)),
+      inset 2px 2px 0px 0px hsl(var(--win95-border-light)),
+      4px 4px 0px 0px rgba(0,0,0,0.5);
+  }
+
+  .win95-title {
+    @apply bg-win95-title text-white px-2 py-1 flex items-center justify-between;
+  }
+
+  .win95-button {
+    @apply px-4 py-2 bg-win95-bg text-black font-pixel text-xs;
+    box-shadow: 
+      inset -2px -2px 0px 0px hsl(var(--win95-border-dark)),
+      inset 2px 2px 0px 0px hsl(var(--win95-border-light));
+  }
+
+  .win95-button:active {
+    box-shadow: 
+      inset 2px 2px 0px 0px hsl(var(--win95-border-dark)),
+      inset -2px -2px 0px 0px hsl(var(--win95-border-light));
+  }
+
+  .win95-close {
+    @apply w-5 h-5 bg-win95-bg text-black flex items-center justify-center text-xs font-bold;
+    box-shadow: 
+      inset -1px -1px 0px 0px hsl(var(--win95-border-dark)),
+      inset 1px 1px 0px 0px hsl(var(--win95-border-light));
+  }
+}
