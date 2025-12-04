@@ -1,22 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 
-// Default: Konami code (up, up, down, down, left, right, left, right, b, a)
-// Alternative: Custom code like 'snake'
-const KONAMI_CODE = [
-  "ArrowUp",
-  "ArrowUp",
-  "ArrowDown",
-  "ArrowDown",
-  "ArrowLeft",
-  "ArrowRight",
-  "ArrowLeft",
-  "ArrowRight",
-  "b",
-  "a",
-];
-const CUSTOM_CODE = ["s", "n", "a", "k", "e"]; // Type "snake"
+// Custom code 'nird'
 
-export const useSecretCode = (code: string[] = CUSTOM_CODE) => {
+export const useSecretCode = (code: string[]) => {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const inputSequence = useRef<string[]>([]);
   const timeoutRef = useRef<NodeJS.Timeout>();
