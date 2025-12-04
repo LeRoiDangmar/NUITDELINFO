@@ -7,10 +7,16 @@ import NumericalGame from "@/components/games/NumericalGame";
 import InclusiveGame from "@/components/games/InclusiveGame";
 import ResponsibleGame from "@/components/games/ResponsibleGame";
 import DurableGame from "@/components/games/DurableGame";
+import LaserGame from "@/components/games/LaserGame";
+import { GameSlot } from "@/types/types";
 
-type GameSlot = 'N' | 'I' | 'R' | 'D' | null;
 
 const gameConfig = {
+  L:{
+    title:  'La zerguèm de la nuit',
+    component: LaserGame,
+  },
+
   N: {
     title: 'nird.exe - Résistance Numérique',
     component: NumericalGame,
@@ -100,7 +106,7 @@ const Index = () => {
 
           {/* Progress indicator */}
           <div className="flex justify-center gap-2 mb-4">
-            {(['N', 'I', 'R', 'D'] as const).map(letter => (
+            {(['L', 'N', 'I', 'R', 'D'] as const).map(letter => (
               <div
                 key={letter}
                 className={`w-3 h-3 ${
