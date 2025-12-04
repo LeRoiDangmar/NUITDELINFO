@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 interface InventorySlotProps {
-  letter: string;
-  label: string;
-  description: string;
+  letter: string | null;
+  label: string | null;
+  description: string | null;
   color: string;
   onClick: () => void;
 }
@@ -37,9 +37,9 @@ const InventorySlot = ({ letter, label, description, color, onClick }: Inventory
       </motion.button>
 
       {/* Tooltip */}
-      {showTooltip && (
+      {showTooltip && (description!==null) && (
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 10, x:-100 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
           className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-50 pointer-events-none"

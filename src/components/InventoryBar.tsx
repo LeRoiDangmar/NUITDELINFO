@@ -1,11 +1,30 @@
 import { motion } from "framer-motion";
 import InventorySlot from "./InventorySlot";
+import { GameSlot } from "@/types/types";
 
 interface InventoryBarProps {
-  onSlotClick: (slot: 'N' | 'I' | 'R' | 'D') => void;
+  onSlotClick: (slot: GameSlot) => void;
 }
 
 const slots = [
+  {
+    letter: 'L',
+    label: 'LA ZERGUÈM',
+    description: 'Affrontez les envahisseurs nocturnes dans une bataille épique pour protéger le réseau scolaire.',
+    color: '#f87171', // red
+  },
+  {
+    letter: null,
+    label: null,
+    description: null,
+    color: '#f87171', // red
+  },
+  {
+    letter: null,
+    label: null,
+    description: null,
+    color: '#f87171', // red
+  },
   {
     letter: 'N',
     label: 'NUMÉRIQUE',
@@ -29,6 +48,18 @@ const slots = [
     label: 'DURABLE',
     description: 'Sobriété numérique et écologie. Optimiser pour réduire notre empreinte carbone.',
     color: '#a78bfa', // violet
+  },
+  {
+    letter: null,
+    label: null,
+    description: null,
+    color: '#f87171', // red
+  },
+  {
+    letter: null,
+    label: null,
+    description: null,
+    color: '#f87171', // red
   },
 ];
 
@@ -59,7 +90,7 @@ const InventoryBar = ({ onSlotClick }: InventoryBarProps) => {
                 label={slot.label}
                 description={slot.description}
                 color={slot.color}
-                onClick={() => onSlotClick(slot.letter as 'N' | 'I' | 'R' | 'D')}
+                onClick={() => onSlotClick(slot.letter as GameSlot)}
               />
             ))}
           </div>
