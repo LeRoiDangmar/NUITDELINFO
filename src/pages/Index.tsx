@@ -21,6 +21,8 @@ const gameConfig = {
   L: {
     title: "La zerguèm de la nuit",
     component: LaserGame,
+    height: 800,
+    width: 1200,
   },
 
   N: {
@@ -162,6 +164,8 @@ const Index = () => {
           isOpen={!!activeGame}
           onClose={handleCloseModal}
           title={gameConfig[activeGame].title}
+          width={gameConfig[activeGame].width ?? 600}
+          height={gameConfig[activeGame].height ?? 400}
         >
           <GameComponent onComplete={handleGameComplete} />
         </GameModal>

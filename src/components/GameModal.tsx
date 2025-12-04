@@ -6,9 +6,18 @@ interface GameModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  width?: number | string;
+  height?: number | string;
 }
 
-const GameModal = ({ isOpen, onClose, title, children }: GameModalProps) => {
+const GameModal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  width,
+  height,
+}: GameModalProps) => {
   const dragControls = useDragControls();
 
   return (
@@ -33,6 +42,10 @@ const GameModal = ({ isOpen, onClose, title, children }: GameModalProps) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            style={{
+              width: typeof width === "number" ? `${width}px` : width,
+              height: typeof height === "number" ? `${height}px` : height,
+            }}
             className="relative w-full h-full md:w-[600px] md:h-auto md:max-h-[80vh] overflow-hidden shadow-2xl"
           >
             <div className="win95-window h-full flex flex-col">
