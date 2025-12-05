@@ -105,7 +105,19 @@ const Index = () => {
         </motion.div>
       </header>
 
-      <section className="relative z-10 flex flex-col items-center justify-center px-4 py-8">
+      <section className="relative z-10 flex flex-col items-center justify-center px-4 py-8 gap-4">
+        {completedGames.size === 4 && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="mt-6 p-4 bg-forest/20 border-2 border-forest-light"
+          >
+            <p className="text-[10px] text-forest-light">
+              🏆 FÉLICITATIONS ! Vous avez découvert tous les piliers NIRD !
+            </p>
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -147,19 +159,16 @@ const Index = () => {
           <p className="text-[8px] text-muted-foreground">
             {completedGames.size}/4 mini-jeux complétés
           </p>
-
-          {completedGames.size === 4 && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="mt-6 p-4 bg-forest/20 border-2 border-forest-light"
-            >
-              <p className="text-[10px] text-forest-light">
-                🏆 FÉLICITATIONS ! Vous avez découvert tous les piliers NIRD !
-              </p>
-            </motion.div>
-          )}
         </motion.div>
+
+        <a
+          href="https://nird.forge.apps.education.fr/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pixel-button px-6 py-4 bg-terminal border-4 border-forest-light text-forest-light hover:bg-forest-light hover:text-terminal transition-colors text-[10px] font-bold uppercase tracking-wider shadow-pixel"
+        >
+          [ En apprendre plus sur le NIRD ]
+        </a>
       </section>
 
       <InventoryBar onSlotClick={handleSlotClick} />
@@ -182,18 +191,6 @@ const Index = () => {
       )}
 
       {showSnake && <SnakeGame onClose={() => setShowSnake(false)} />}
-
-      {/* Footer */}
-      <footer className="fixed bottom-[320px] left-0 right-0 z-30 text-center">
-        <a
-          href="https://nird.forge.apps.education.fr/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="pixel-button px-6 py-4 bg-terminal border-4 border-forest-light text-forest-light hover:bg-forest-light hover:text-terminal transition-colors text-[10px] font-bold uppercase tracking-wider shadow-pixel"
-        >
-          [ En apprendre plus sur le NIRD ]
-        </a>
-      </footer>
     </main>
   );
 };
