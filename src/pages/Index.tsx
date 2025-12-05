@@ -180,7 +180,7 @@ const Index = () => {
             }
           }}
           title={gameConfig[activeGame].title}
-          width={gameConfig[activeGame].width ?? 30}
+          width={gameConfig[activeGame].width ?? 40}
           height={gameConfig[activeGame].height ?? 50}
         >
           <GameComponent onComplete={handleGameComplete} />
