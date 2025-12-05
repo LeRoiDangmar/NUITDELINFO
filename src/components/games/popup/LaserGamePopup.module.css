@@ -3,6 +3,36 @@
     background-color: #c0c0c0;
     border: 4px outset #000000;
     padding : 2px;
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    transition: all 0.3s ease-out;
+}
+
+.appearing {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.disappearing {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+    transition: all 0.3s ease-in;
+}
+
+.disappearingGood {
+    opacity: 0;
+    transform: scale(1.1) translateY(-10px);
+    background-color: #90EE90;
+    border-color: #32CD32;
+    transition: all 0.3s ease-in;
+}
+
+.disappearingBad {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+    background-color: #FFB6C1;
+    border-color: #FF6B6B;
+    transition: all 0.3s ease-in;
 }
 
 .upperSection {

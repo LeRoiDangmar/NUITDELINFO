@@ -1,44 +1,64 @@
 import { ActiveLaserGamePopup } from "@/types/Types";
 import { useLaserGame } from "../../context/LaserGameContext";
-import React, { useEffect } from "react";
-import { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./LaserGamePopup.module.css";
 import closeButton from "@/assets/popups/closeButton.png";
  
 
 const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
-    const { setPopupList, setSanityLeft , sanityLeft } = useLaserGame();
+    const { setPopupList, setSanityLeft, sanityLeft } = useLaserGame();
+    const [isVisible, setIsVisible] = useState(false);
+    const [disappearingType, setDisappearingType] = useState<'none' | 'good' | 'bad'>('none');
 
-    const handleDestroy = () => {
-        setPopupList((prev) => prev.filter((p) => p.id !== popup.id)); 
+    const handleDestroy = (isGoodAction: boolean) => {
+        setDisappearingType(isGoodAction ? 'good' : 'bad');
+        setTimeout(() => {
+            setPopupList((prev) => prev.filter((p) => p.id !== popup.id));
+        }, 300); // Wait for animation to complete
     }
 
     const handleCloseClick = () => {
-        if (!popup.isEvil)
+        // Good action: evil popup clicked OR non-evil popup closed manually
+        const isGoodAction = popup.isEvil;
+        
+        if (!popup.isEvil) {
+            // Clicking non-evil popup is bad (loses points)
             setSanityLeft(popup.pointLoss);
-        handleDestroy();
+        }
+        
+        handleDestroy(isGoodAction);
     }
 
     useEffect(() => {
-        console.log("Popup mounted, will destroy in", popup.actionDelay, "seconds");
+        // Trigger appearing animation
+        setTimeout(() => setIsVisible(true), 10);
+
         const timeout = setTimeout(() => {
-            console.log("I'm destroying myself");
             if (popup.isEvil) {
-                console.log("Losing sanity:", popup.pointLoss);
+                // Evil popup disappeared naturally (bad action)
                 setSanityLeft(-popup.pointLoss);
+                handleDestroy(false);
+            } else {
+                // Non-evil popup disappeared naturally (good action)
+                handleDestroy(true);
             }
-            handleDestroy();
         }, popup.actionDelay * 1000);
     
         return () => {
             clearTimeout(timeout);
         };
     }, []);
+
+    const getDisappearingClass = () => {
+        if (disappearingType === 'good') return styles.disappearingGood;
+        if (disappearingType === 'bad') return styles.disappearingBad;
+        return '';
+    };
     
 
     return (
         <div
-            className={styles.box}
+            className={`${styles.box} ${isVisible && disappearingType === 'none' ? styles.appearing : ''} ${getDisappearingClass()}`}
             style={{
                 width: popup.width,
                 height: popup.height,
