@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, Reorder } from "framer-motion";
 import InventorySlot from "./InventorySlot";
 import { GameSlot } from "@/types/Types";
+import laserGameImage from "@/assets/laser.png";
 
 interface InventoryBarProps {
   onSlotClick: (slot: GameSlot) => void;
@@ -15,6 +16,7 @@ const initialSlots = [
     description:
       "Affrontez les envahisseurs nocturnes dans une bataille épique pour protéger le réseau scolaire.",
     color: "#f87171",
+    image: laserGameImage, // Add this line
   },
   {
     id: "empty-1",

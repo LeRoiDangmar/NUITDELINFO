@@ -7,6 +7,7 @@ interface SlotItem {
   label: string | null;
   description: string | null;
   color: string;
+  image?: string;
 }
 
 interface InventorySlotProps {
@@ -29,10 +30,18 @@ const InventorySlot = ({ item, onClick }: InventorySlotProps) => {
         whileTap={{ scale: 0.95 }}
       >
         <span
-          className="text-2xl md:text-3xl font-pixel glow-screen pointer-events-none"
+          className="text-2xl md:text-3xl font-pixel glow-screen pointer-events-none flex items-center justify-center"
           style={{ color }}
         >
-          {letter}
+          {item.image ? (
+            <img
+              src={item.image}
+              alt={letter || ""}
+              className="w-6 h-6 md:w-8 md:h-8 pixelated"
+            />
+          ) : (
+            letter
+          )}
         </span>
 
         <div className="absolute top-1 left-1 w-2 h-2 border-l-2 border-t-2 border-forest-light opacity-50 pointer-events-none" />

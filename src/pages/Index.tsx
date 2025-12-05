@@ -17,6 +17,8 @@ import {
   useLaserGame,
 } from "@/components/context/LaserGameContext";
 
+import laserGameImage from "@/assets/laser.png";
+
 const Index = () => {
   const { popupList, setPopupList, gameInterval } = useLaserGame();
 
