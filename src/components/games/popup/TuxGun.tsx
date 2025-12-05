@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import tux from "@/assets/popups/tux.png";
 import styles from "./TuxGun.module.css";
+import laserShoot1 from "@/assets/sounds/laserShoot_1.wav";
+import laserShoot2 from "@/assets/sounds/laserShoot_2.wav";
+import laserShoot3 from "@/assets/sounds/laserShoot_3.wav";
+import laserShoot4 from "@/assets/sounds/laserShoot_4.wav";
+
 
 interface Laser {
     id: number;
@@ -23,12 +28,13 @@ const TuxGun = () => {
     const [flashes, setFlashes] = useState<Flash[]>([]);
     const [laserCounter, setLaserCounter] = useState(0);
     const [flashCounter, setFlashCounter] = useState(0);
+    const laserSoundList = [laserShoot1, laserShoot2, laserShoot3, laserShoot4];
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             // Get the center of the screen
             const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight - 50; // Position of the tux gun
+            const centerY = window.innerHeight - 250; // Position of the tux gun
             
             // Calculate angle between center and mouse position
             const deltaX = e.clientX - centerX;
@@ -39,7 +45,14 @@ const TuxGun = () => {
             setMousePosition({ x: e.clientX, y: e.clientY });
         };
 
+        const playLaserSound = () => {
+            const randomIndex = Math.floor(Math.random() * laserSoundList.length);
+            const audio = new Audio(laserSoundList[randomIndex]);
+            audio.play();
+        }
+
         const handleClick = (e: MouseEvent) => {
+            playLaserSound();
             // Calculate tux gun position (center bottom)
             const tuxX = window.innerWidth / 2 - 70;
             const tuxY = window.innerHeight - 250;

@@ -7,7 +7,7 @@ import LaserGamePopup from "./popup/LaserGamePopup";
 import reactImage from "@/assets/popups/react.png";
 import { set } from "date-fns";
 import TuxGun from "./popup/TuxGun";
-
+import explosion from "@/assets/sounds/explosion.wav";
 
 const LaserGame = () => {
     const { popupList, setPopupList, gameInterval, setGameInterval, sanityLeft, setSanityLeft } = useLaserGame();
@@ -15,10 +15,14 @@ const LaserGame = () => {
     const [gameActive, setGameActive] = useState(true);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+    const playExplosionSound = () => {
+        const audio = new Audio(explosion);
+        audio.play();
+    }
 
     useEffect(() => {
         setSanityLeft(-sanityLeft);
-        setSanityLeft(100);
+        setSanityLeft(200);
 
         // Start timer
         timerRef.current = setInterval(() => {
@@ -37,9 +41,10 @@ const LaserGame = () => {
             setGameActive(false);
             if (timerRef.current) {
                 clearInterval(timerRef.current);
-                clearInterval(gameInterval);
-                setPopupList([]);
             }
+            clearInterval(gameInterval);
+            setPopupList([]);
+            playExplosionSound();
         }
     }, [sanityLeft, gameActive]);
 
@@ -157,23 +162,42 @@ const LaserGame = () => {
 
     //loop every second unitl sanityLeft is 0
     const gameLoop = () => {
+        let meanPopup = 0.5;
+        let timeToDisappear = 6;
+        let timeToAttack = 4;
+        let damage = 50;
+
         setGameInterval(setInterval(() => {
             timeElapsed += 1;
-            //every 2 seconds add a new popup
-            if (timeElapsed % 1 === 0) {
+
+            let popupCount = Math.floor(meanPopup);
+            //get random between 0 and 1, if less than decimal part of meanPopup, add 1 to popupCount
+            const decimalPart = meanPopup - Math.floor(meanPopup);
+            if (Math.random() < decimalPart) {
+                popupCount += 1;
+            }
+
+            for (let i = 0; i < popupCount; i++) {
                 const newPopup = selectRandomPopup();
                 if (newPopup) {
                     const activePopup: ActiveLaserGamePopup = {
                         ...newPopup,
                         x: Math.random() * (window.innerWidth - newPopup.width),
                         y: Math.random() * (window.innerHeight - newPopup.height),
-                        pointLoss: newPopup.isEvil ? 50 : -30,
-                        actionDelay: 3,
+                        pointLoss: newPopup.isEvil ? damage : -damage,
+                        actionDelay: newPopup.isEvil ? timeToAttack : timeToDisappear,
                         id: index
                     }
                     index++;
                     setPopupList((prev) => [...prev, activePopup]);
-                }            
+                }
+            }
+            
+            if(timeElapsed!= 0 && timeElapsed % 10 == 0) {
+                meanPopup += 0.25;
+                timeToDisappear = Math.max(2, timeToDisappear + 0.25);
+                timeToAttack = Math.max(1, timeToAttack - 0.5);
+                damage += 10;
             }
             
             //end game if sanityLeft is 0
@@ -186,8 +210,6 @@ const LaserGame = () => {
     useEffect(() => {
         
         gameLoop();
-
-        
     }, []);
 
     return (
