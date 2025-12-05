@@ -3,7 +3,15 @@ import { useLaserGame } from "../../context/LaserGameContext";
 import React, { useEffect, useState } from "react";
 import styles from "./LaserGamePopup.module.css";
 import closeButton from "@/assets/popups/closeButton.png";
- 
+
+import hitHurt_1 from "@/assets/sounds/hitHurt_1.mp3";
+import hitHurt_2 from "@/assets/sounds/hitHurt_2.mp3";
+import hitHurt_3 from "@/assets/sounds/hitHurt_3.mp3";
+import hitHurt_4 from "@/assets/sounds/hitHurt_4.mp3";
+
+import synth_1 from "@/assets/sounds/synth_1.mp3";
+import synth_2 from "@/assets/sounds/synth_2.mp3";
+import synth_3 from "@/assets/sounds/synth_3.mp3";
 
 const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
     const { setPopupList, setSanityLeft, sanityLeft } = useLaserGame();
