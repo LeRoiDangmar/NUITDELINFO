@@ -35,6 +35,8 @@ const Index = () => {
     N: {
       title: "nird.exe - Code Liberation",
       component: CodeLiberationGame,
+      width: 80,
+      height: 85,
     },
     I: {
       title: "nird.exe - Réseau Inclusif",

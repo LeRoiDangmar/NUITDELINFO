@@ -198,8 +198,8 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
     const company = companies[companyIndex];
     const threats = COMPANY_THREATS[company];
     
-    // Spawn 3-5 enemies per subwave
-    const enemyCount = 3 + subWave;
+    // Spawn exactly 3 enemies per subwave
+    const enemyCount = 3;
     const newEnemies: Enemy[] = [];
     
     for (let i = 0; i < enemyCount; i++) {
@@ -210,7 +210,7 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
         word: OPEN_SOURCE_WORDS[
           Math.floor(Math.random() * OPEN_SOURCE_WORDS.length)
         ],
-        position: { x: (i + 1) * (100 / (enemyCount + 1)), y: 0 },
+        position: { x: (i + 1) * 25, y: 0 },
         speed: 0.08 + wave * 0.02 + subWave * 0.01,
       };
       newEnemies.push(newEnemy);
@@ -339,18 +339,16 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
   };
 
   return (
-    <div className="relative w-full h-[500px] bg-terminal border-4 border-forest-light overflow-hidden">
+    <div className="relative w-full h-full bg-terminal border-4 border-forest-light overflow-hidden">
       {/* Matrix-style background */}
       <div className="absolute inset-0 opacity-10">
-        <div className="text-forest-light text-[8px] font-mono leading-tight animate-pulse">
-          {Array.from({ length: 50 }).map((_, i) => (
-            <div key={i}>
-              {Array.from({ length: 80 })
-                .map(() => Math.random().toString(36)[2])
-                .join("")}
-            </div>
-          ))}
-        </div>
+        <pre className="text-forest-light text-[8px] font-mono leading-[0.9] m-0 p-0 whitespace-pre">
+{Array.from({ length: 200 }).map(() => (
+  Array.from({ length: 300 })
+    .map(() => Math.random().toString(36)[2] || "0")
+    .join("")
+)).join("\n")}
+        </pre>
       </div>
 
       {/* HUD */}

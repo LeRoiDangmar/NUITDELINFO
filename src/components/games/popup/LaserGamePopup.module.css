@@ -1,18 +1,29 @@
 .box {
     position: absolute;
     background-color: #c0c0c0;
-    border: 2px #000000;
-    border-style: ridge;
+    border: 4px outset #000000;
     padding : 2px;
 }
 
 .upperSection {
     background-color: #0200a1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .title {
     padding-left: 3px;
     color : #c0c0c0;
+}
+
+.closeButton{
+    background-color: #c0c0c0;
+    border-style: outset;
+    border: 2px outset #000000;
+    margin: 0.25rem;
+    padding: 0.15rem;
+    width: 2rem;
 }
 
 .lowerSection {
@@ -27,5 +38,6 @@
 }
 
 .description {
-    font-size: 0.5rem;
+    font-size: 0.75rem;
+    color : #000000;
 }
