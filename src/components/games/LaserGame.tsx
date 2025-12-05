@@ -6,6 +6,7 @@ import LaserGamePopup from "./popup/LaserGamePopup";
 
 import reactImage from "@/assets/popups/react.png";
 import { set } from "date-fns";
+import TuxGun from "./popup/TuxGun";
 
 
 const LaserGame = () => {
@@ -17,7 +18,7 @@ const LaserGame = () => {
 
     useEffect(() => {
         setSanityLeft(-sanityLeft);
-        setSanityLeft(1000);
+        setSanityLeft(100);
 
         // Start timer
         timerRef.current = setInterval(() => {
@@ -36,6 +37,8 @@ const LaserGame = () => {
             setGameActive(false);
             if (timerRef.current) {
                 clearInterval(timerRef.current);
+                clearInterval(gameInterval);
+                setPopupList([]);
             }
         }
     }, [sanityLeft, gameActive]);
@@ -189,14 +192,14 @@ const LaserGame = () => {
 
     return (
         <>
-        <div>
             <div>
-                Sanity left : {sanityLeft}
+                <div>
+                    Sanity left : {sanityLeft}
+                </div>
+                <div>
+                    Timer : {timer.toFixed(2)}s
+                </div>
             </div>
-            <div>
-                Timer : {timer.toFixed(2)}s
-            </div>
-        </div>
             {popupList.map((popup) => (
                 <LaserGamePopup
                     key={`popup-${popup.id}`}
@@ -208,6 +211,8 @@ const LaserGame = () => {
                     Game Over! Final Score: {timer.toFixed(2)}s
                 </div>
             )}
+            
+            <TuxGun />
         </>
     )
 }
