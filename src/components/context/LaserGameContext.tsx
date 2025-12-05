@@ -10,6 +10,8 @@ interface LaserGameContextType {
   setIsGameActive: (active: boolean) => void;
   popupList: ActiveLaserGamePopup[];
   setPopupList: React.Dispatch<React.SetStateAction<ActiveLaserGamePopup[]>>;
+  gameInterval: NodeJS.Timeout | null;
+  setGameInterval: React.Dispatch<React.SetStateAction<NodeJS.Timeout | null>>;
 }
 
 const LaserGameContext = createContext<LaserGameContextType | undefined>(undefined);
@@ -23,6 +25,8 @@ export const LaserGameProvider = ({ children }: { children: ReactNode }) => {
     setScore((prevScore) => prevScore + points);
   };
 
+  const [gameInterval, setGameInterval] = useState<NodeJS.Timeout | null>(null);
+
   return (
     <LaserGameContext.Provider value={{
       score,
@@ -30,7 +34,9 @@ export const LaserGameProvider = ({ children }: { children: ReactNode }) => {
       isGameActive,
       setIsGameActive,
       popupList,
-      setPopupList
+      setPopupList,
+      gameInterval,
+      setGameInterval
     }}>
       {children}
     </LaserGameContext.Provider>

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ActiveLaserGamePopup, LaserGamePopupType } from "@/types/Types";
 import { useLaserGame } from "../context/LaserGameContext";
@@ -8,17 +8,16 @@ import reactImage from "@/assets/popups/react.png";
 
 
 interface LaserProps {
-  onComplete: () => void;
 }
 
-const LaserGame = ({ onComplete }: LaserProps) => {
-    const { popupList, setPopupList } = useLaserGame();
+const LaserGame = () => {
+    const { popupList, setPopupList, gameInterval, setGameInterval } = useLaserGame();
 
     const [availablePopups, setAvailablePopups] = useState<LaserGamePopupType[]>([
         {
             id: 1,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "Pack Office",
             desc: "Ta licence office arrive à expiration, renouvèle la vite !",
             isEvil: true,
@@ -26,8 +25,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 2,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "Windows Update",
             desc: "Votre système d'exploitation a besoin de se mettre à jour.",
             isEvil: true,
@@ -35,8 +34,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 3,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "Norton 360",
             desc: "Votre système n'est pas protégé, installez Norton 360 maintenant !",
             isEvil: true,
@@ -44,8 +43,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 4,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "Google Drive",
             desc: "Votre espacee de stockage est presque saturé ! Augmentez sa taille en souscrivant à un abonnement.",
             isEvil: true,
@@ -53,8 +52,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 5,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "Linux",
             desc: "Rejoignez des millions d'utilisateurs et optez pour l'OS open source le plus populaire !",
             isEvil: false,
@@ -62,8 +61,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 6,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "Open Office",
             desc: "Une alternative gratuite et open source à Microsoft Office.",
             isEvil: false,
@@ -71,8 +70,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 7,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "VLC Media Player",
             desc: "Un lecteur multimédia gratuit et open source qui prend en charge une large gamme de formats audio et vidéo.",
             isEvil: false,
@@ -80,8 +79,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 8,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "GIMP",
             desc: "Un logiciel de retouche d'image gratuit et open source, souvent comparé à Adobe Photoshop.",
             isEvil: false,
@@ -89,8 +88,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 9,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "Mozilla Firefox",
             desc: "Un navigateur web open source axé sur la confidentialité et la personnalisation.",
             isEvil: false,
@@ -98,8 +97,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 10,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "Suite Adobe",
             desc: "Optez pour une licence professionnelle pour accéder à l'ensemble des outils créatifs d'Adobe.",
             isEvil: true,
@@ -107,8 +106,8 @@ const LaserGame = ({ onComplete }: LaserProps) => {
         },
         {
             id: 11,
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 350,
             title: "IOS",
             desc: "Découvrez l'univers Apple avec iOS, le système d'exploitation mobile le plus fermé au monde.",
             isEvil: true,
@@ -128,7 +127,7 @@ const LaserGame = ({ onComplete }: LaserProps) => {
 
     //loop every second unitl sanityLeft is 0
     const gameLoop = () => {
-        const interval = setInterval(() => {
+        setGameInterval(setInterval(() => {
             timeElapsed += 1;
             //every 2 seconds add a new popup
             if (timeElapsed % 2 === 0) {
@@ -141,27 +140,28 @@ const LaserGame = ({ onComplete }: LaserProps) => {
                         pointLoss: newPopup.isEvil ? 50 : -30,
                         attackDelay: 3,
                     }
+
+                    console.log(newPopup, activePopup);
                     setPopupList((prev) => [...prev, activePopup]);
                 }
             }
             
             //end game if sanityLeft is 0
             if (sanityLeft <= 0) {
-                clearInterval(interval);
-
-                //display user score and wait for close
-                onComplete();
+                clearInterval(gameInterval);
             }
-        }, 1000);
+        }, 1000));
     }
 
-    gameLoop();
+    useEffect(() => {
+        gameLoop();
+    }, []);
 
     return (
         <>
             {popupList.map((popup) => (
                 <LaserGamePopup
-                    key={popup.id}
+                    key={`popup-${popup.id}-${popup.x}-${popup.y}-${Date.now()}`}
                     popup={popup}
                 />
             ))}

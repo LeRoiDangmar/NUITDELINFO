@@ -1,23 +1,31 @@
 .box {
-    
+    position: absolute;
+    background-color: #c0c0c0;
+    border: 2px #000000;
+    border-style: ridge;
+    padding : 2px;
 }
 
 .upperSection {
-
+    background-color: #0200a1;
 }
 
 .title {
-
+    padding-left: 3px;
+    color : #c0c0c0;
 }
 
 .lowerSection {
-
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .image{
-
+    margin-bottom: 10px;
 }
 
 .description {
-
+    font-size: 0.5rem;
 }

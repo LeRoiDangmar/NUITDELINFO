@@ -17,34 +17,41 @@ import {
   useLaserGame,
 } from "@/components/context/LaserGameContext";
 
-const gameConfig = {
-  L: {
-    title: "La zerguèm de la nuit",
-    component: LaserGame,
-    height: 90,
-    width: 90,
-  },
 
-  N: {
-    title: "nird.exe - Résistance Numérique",
-    component: NumericalGame,
-  },
-  I: {
-    title: "nird.exe - Réseau Inclusif",
-    component: InclusiveGame,
-  },
-  R: {
-    title: "nird.exe - Atelier Réparation",
-    component: ResponsibleGame,
-  },
-  D: {
-    title: "nird.exe - Sobriété Énergétique",
-    component: DurableGame,
-  },
-};
 
 const Index = () => {
-  //const { score, updateScore } = useLaserGame();
+  const { popupList, setPopupList, gameInterval } = useLaserGame();
+
+  const gameConfig = {
+    L: {
+      title: "La zerguèm de la nuit",
+      component: LaserGame,
+      onClose: () => {
+        if (popupList.length > 0)
+          setPopupList([]);
+        clearInterval(gameInterval);
+      },
+      height: 90,
+      width: 90,
+    },
+
+    N: {
+      title: "nird.exe - Résistance Numérique",
+      component: NumericalGame,
+    },
+    I: {
+      title: "nird.exe - Réseau Inclusif",
+      component: InclusiveGame,
+    },
+    R: {
+      title: "nird.exe - Atelier Réparation",
+      component: ResponsibleGame,
+    },
+    D: {
+      title: "nird.exe - Sobriété Énergétique",
+      component: DurableGame,
+    },
+  };
 
   const [activeGame, setActiveGame] = useState<GameSlot>(null);
   const [completedGames, setCompletedGames] = useState<Set<GameSlot>>(
@@ -162,7 +169,12 @@ const Index = () => {
       {activeGame && GameComponent && (
         <GameModal
           isOpen={!!activeGame}
-          onClose={handleCloseModal}
+          onClose={() => {
+            handleCloseModal();
+            if (gameConfig[activeGame].onClose) {
+              gameConfig[activeGame].onClose();
+            }
+          }}
           title={gameConfig[activeGame].title}
           width={gameConfig[activeGame].width ?? 30}
           height={gameConfig[activeGame].height ?? 50}
