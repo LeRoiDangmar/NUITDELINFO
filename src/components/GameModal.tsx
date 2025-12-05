@@ -73,12 +73,6 @@ const GameModal = ({
               <div className="flex-1 p-4 bg-terminal overflow-auto">
                 {children}
               </div>
-
-              <div className="bg-win95-bg px-2 py-1 border-t-2 border-win95-bg">
-                <span className="text-[8px] text-terminal">
-                  Appuyez sur ESC pour fermer
-                </span>
-              </div>
             </div>
           </motion.div>
         </div>

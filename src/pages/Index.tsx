@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import PixelBackground from "@/components/PixelBackground";
 import InventoryBar from "@/components/InventoryBar";
 import GameModal from "@/components/GameModal";
-import NumericalGame from "@/components/games/NumericalGame";
+import CodeLiberationGame from "@/components/games/CodeLiberationGame";
 import InclusiveGame from "@/components/games/InclusiveGame";
 import ResponsibleGame from "@/components/games/ResponsibleGame";
 import DurableGame from "@/components/games/DurableGame";
@@ -16,8 +16,6 @@ import {
   LaserGameProvider,
   useLaserGame,
 } from "@/components/context/LaserGameContext";
-
-
 
 const Index = () => {
   const { popupList, setPopupList, gameInterval } = useLaserGame();
@@ -34,10 +32,9 @@ const Index = () => {
       height: 90,
       width: 90,
     },
-
     N: {
-      title: "nird.exe - Résistance Numérique",
-      component: NumericalGame,
+      title: "nird.exe - Code Liberation",
+      component: CodeLiberationGame,
     },
     I: {
       title: "nird.exe - Réseau Inclusif",
@@ -50,8 +47,8 @@ const Index = () => {
     D: {
       title: "nird.exe - Sobriété Énergétique",
       component: DurableGame,
-    },
-  };
+    }
+  }
 
   const [activeGame, setActiveGame] = useState<GameSlot>(null);
   const [completedGames, setCompletedGames] = useState<Set<GameSlot>>(
