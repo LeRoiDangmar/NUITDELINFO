@@ -177,6 +177,7 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
   const [score, setScore] = useState(0);
   const [wave, setWave] = useState(1);
   const [subWave, setSubWave] = useState(1);
+  const [respawnTrigger, setRespawnTrigger] = useState(0);
   const [enemies, setEnemies] = useState<Enemy[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const [lives, setLives] = useState(3);
@@ -211,7 +212,7 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
           Math.floor(Math.random() * OPEN_SOURCE_WORDS.length)
         ],
         position: { x: (i + 1) * 25, y: 0 },
-        speed: 0.08 + wave * 0.02 + subWave * 0.01,
+        speed: 0.15 + wave * 0.02 + subWave * 0.01,
       };
       newEnemies.push(newEnemy);
     }
@@ -282,8 +283,12 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
           },
         }));
 
-        // Check for enemies that reached the bottom
-        const reachedBottom = updated.filter((e) => e.position.y >= 100);
+        // Check for enemies that just reached the bottom (were below 100, now at or above)
+        const reachedBottom = updated.filter((e) => {
+          const oldEnemy = prev.find(old => old.id === e.id);
+          return oldEnemy && oldEnemy.position.y < 100 && e.position.y >= 100;
+        });
+        
         if (reachedBottom.length > 0) {
           setLives((l) => {
             const newLives = l - reachedBottom.length;
@@ -292,8 +297,18 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
             }
             return Math.max(0, newLives);
           });
+          
+          // Check if all enemies are gone (need to respawn subwave)
+          const remaining = updated.filter((e) => e.position.y < 100);
+          if (remaining.length === 0) {
+            // Trigger respawn after a delay
+            setTimeout(() => {
+              setRespawnTrigger((t) => t + 1);
+            }, 1000);
+          }
         }
 
+        // Remove enemies that reached the bottom
         return updated.filter((e) => e.position.y < 100);
       });
 
@@ -309,13 +324,13 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
     };
   }, [gameOver, victory]);
 
-  // Spawn subwave when subWave changes
+  // Spawn subwave when subWave changes or respawn is triggered
   useEffect(() => {
     if (gameOver || victory) return;
 
     // Clear any existing enemies and spawn new subwave
     spawnSubWave();
-  }, [subWave, wave, gameOver, victory, spawnSubWave]);
+  }, [subWave, wave, respawnTrigger, gameOver, victory, spawnSubWave]);
 
   // Auto-focus input
   useEffect(() => {
