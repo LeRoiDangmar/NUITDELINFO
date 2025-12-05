@@ -11,7 +11,7 @@ interface LaserProps {
 }
 
 const LaserGame = () => {
-    const { popupList, setPopupList, gameInterval, setGameInterval } = useLaserGame();
+    const { popupList, setPopupList, gameInterval, setGameInterval, sanityLeft } = useLaserGame();
 
     const [availablePopups, setAvailablePopups] = useState<LaserGamePopupType[]>([
         {
@@ -122,8 +122,8 @@ const LaserGame = () => {
     }
 
     let timeElapsed = 0;
-    let sanityLeft = 1000;    
 
+    let index = 1;
 
     //loop every second unitl sanityLeft is 0
     const gameLoop = () => {
@@ -138,10 +138,10 @@ const LaserGame = () => {
                         x: Math.random() * (window.innerWidth - newPopup.width),
                         y: Math.random() * (window.innerHeight - newPopup.height),
                         pointLoss: newPopup.isEvil ? 50 : -30,
-                        attackDelay: 3,
+                        actionDelay: 3,
+                        id: index
                     }
-
-                    console.log(newPopup, activePopup);
+                    index++;
                     setPopupList((prev) => [...prev, activePopup]);
                 }
             }
@@ -159,9 +159,12 @@ const LaserGame = () => {
 
     return (
         <>
+        <div>
+            Laser Game Active : {sanityLeft}
+        </div>
             {popupList.map((popup) => (
                 <LaserGamePopup
-                    key={`popup-${popup.id}-${popup.x}-${popup.y}-${Date.now()}`}
+                    key={`popup-${popup.id}`}
                     popup={popup}
                 />
             ))}

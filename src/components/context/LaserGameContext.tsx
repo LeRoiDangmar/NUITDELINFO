@@ -4,8 +4,8 @@ import { ActiveLaserGamePopup } from "@/types/Types";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface LaserGameContextType {
-  score: number;
-  updateScore: (points: number) => void;
+  sanityLeft: number;
+  setSanityLeft: React.Dispatch<React.SetStateAction<number>>;
   isGameActive: boolean;
   setIsGameActive: (active: boolean) => void;
   popupList: ActiveLaserGamePopup[];
@@ -17,20 +17,16 @@ interface LaserGameContextType {
 const LaserGameContext = createContext<LaserGameContextType | undefined>(undefined);
 
 export const LaserGameProvider = ({ children }: { children: ReactNode }) => {
-  const [score, setScore] = useState(0);
+  const [sanityLeft, setSanityLeft] = useState(1000);
   const [isGameActive, setIsGameActive] = useState(false);
   const [popupList, setPopupList] = useState<ActiveLaserGamePopup[]>([])
-
-  const updateScore = (points: number) => {
-    setScore((prevScore) => prevScore + points);
-  };
 
   const [gameInterval, setGameInterval] = useState<NodeJS.Timeout | null>(null);
 
   return (
     <LaserGameContext.Provider value={{
-      score,
-      updateScore,
+      sanityLeft,
+      setSanityLeft,
       isGameActive,
       setIsGameActive,
       popupList,
@@ -44,5 +40,9 @@ export const LaserGameProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useLaserGame = (): LaserGameContextType => {
-  return useContext(LaserGameContext);
+  const ctx = useContext(LaserGameContext);
+  if (!ctx) {
+    throw new Error("useLaserGame must be used inside a LaserGameProvider");
+  }
+  return ctx;
 };

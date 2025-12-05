@@ -17,5 +17,5 @@ export type ActiveLaserGamePopup = LaserGamePopupType & {
     x: number;
     y: number;
     pointLoss: number;
-    attackDelay: number;
+    actionDelay: number;
 }
