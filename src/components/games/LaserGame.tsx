@@ -202,8 +202,8 @@ const LaserGame = () => {
                 if (newPopup) {
                     const activePopup: ActiveLaserGamePopup = {
                         ...newPopup,
-                        x: Math.random() * (window.innerWidth - newPopup.width),
-                        y: (Math.random() * window.innerHeight - 150) - newPopup.height + 50,
+                        x: Math.random() * (window.innerWidth - newPopup.width - 200),
+                        y: Math.random() * (window.innerHeight - newPopup.height - 250),
                         pointLoss: newPopup.isEvil ? damage : -damage,
                         actionDelay: newPopup.isEvil ? timeToAttack : timeToDisappear,
                         id: index

@@ -53,7 +53,7 @@ const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
         // Trigger appearing animation
         setTimeout(() => setIsVisible(true), 10);
 
-        // Animate loading bar
+        // Animate loading bar with consistent interval
         const startTime = Date.now();
         const duration = popup.actionDelay * 1000;
 
@@ -61,12 +61,10 @@ const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
             const elapsed = Date.now() - startTime;
             const progress = Math.max(0, 100 - (elapsed / duration) * 100);
             setLoadingProgress(progress);
-            
-            if (progress > 0) {
-                requestAnimationFrame(updateProgress);
-            }
         };
-        requestAnimationFrame(updateProgress);
+
+        // Update every 50ms for smooth, consistent animation
+        const progressInterval = setInterval(updateProgress, 50);
 
         const timeout = setTimeout(() => {
             if (popup.isEvil) {
@@ -81,6 +79,7 @@ const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
     
         return () => {
             clearTimeout(timeout);
+            clearInterval(progressInterval);
         };
     }, []);
 
@@ -125,7 +124,7 @@ const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
             <div className={styles.loadingBar}>
                 <div 
                     className={styles.loadingProgress}
-                    style={{ width: `${loadingProgress}px` }}
+                    style={{ width: `${loadingProgress}%` }}
                 ></div>
             </div>
         </div>
