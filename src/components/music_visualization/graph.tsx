@@ -65,7 +65,7 @@ export function Graph() {
 
   return (
     <div className='visualizer-container'>
-      <h2 className='title'>Music Visualization Component</h2>
+      <h2 className='title'>Music Visualization</h2>
       
       <input
         type="file"
@@ -117,44 +117,44 @@ export function Graph() {
           if (!ctx) return;
 
           const draw = () => {
-          const data = getFrequencyData();
-          const width = canvas.width;
-          const height = canvas.height;
+            const data = getFrequencyData();
+            const width = canvas.width;
+            const height = canvas.height;
 
-          ctx.fillStyle = 'rgb(0, 0, 0)';
-          ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = 'rgb(0, 0, 0)';
+            ctx.fillRect(0, 0, width, height);
 
-          const binCount = 128; // Number of columns to display
-          const binSize = Math.floor(data.length / binCount);
-          const barWidth = width / binCount;
+            const binCount = 128; // Number of columns to display
+            const binSize = Math.floor(data.length / binCount);
+            const barWidth = width / binCount;
 
-          // Calculate all bin values first to find max for normalization
-          const binValues: number[] = [];
-          for (let i = 0; i < binCount; i++) {
-            let sum = 0;
-            for (let j = 0; j < binSize; j++) {
-              sum += data[i * binSize + j];
+            // Calculate all bin values first to find max for normalization
+            const binValues: number[] = [];
+            for (let i = 0; i < binCount; i++) {
+              let sum = 0;
+              for (let j = 0; j < binSize; j++) {
+                sum += data[i * binSize + j];
+              }
+              const average = sum / binSize;
+              binValues.push(average / 255.0);
             }
-            const average = sum / binSize;
-            binValues.push(average / 255.0);
-          }
 
-          // Find max value for dynamic range
-          const maxValue = Math.max(...binValues);
+            // Find max value for dynamic range
+            const maxValue = Math.max(...binValues);
 
-          for (let i = 0; i < binCount; i++) {
-        const normalizedValue = binValues[i] / Math.max(maxValue, 0.1);
-        // Apply exponential scaling for more sensitivity
-        const scaledValue = Math.pow(normalizedValue, 0.3);
-        const barHeight = scaledValue * height * 0.8;
+            for (let i = 0; i < binCount; i++) {
+              const normalizedValue = binValues[i] / Math.max(maxValue, 0.1);
+              // Apply exponential scaling for more sensitivity
+              const scaledValue = Math.pow(normalizedValue, 0.3);
+              const barHeight = scaledValue * height * 0.8;
 
-        // Draw bar with gradient effect
-        const hue = (i / binCount) * 360;
-        ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
-        ctx.fillRect(i * barWidth + 2, height - barHeight, barWidth - 4, barHeight);
-          }
+              // Draw bar with gradient effect
+              const hue = (i / binCount) * 360;
+              ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+              ctx.fillRect(i * barWidth + 2, height - barHeight, barWidth - 4, barHeight);
+            }
 
-          requestAnimationFrame(draw);
+            requestAnimationFrame(draw);
           };
 
           draw();

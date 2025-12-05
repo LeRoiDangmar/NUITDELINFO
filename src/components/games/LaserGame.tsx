@@ -1,0 +1,262 @@
+import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import { ActiveLaserGamePopup, LaserGamePopupType } from "@/types/Types";
+import { useLaserGame } from "../context/LaserGameContext";
+import LaserGamePopup from "./popup/LaserGamePopup";
+
+import reactImage from "@/assets/popups/react.png";
+import appleImage from "@/assets/popups/apple.png";
+import adobeImage from "@/assets/popups/adobe.png";
+import driveImage from "@/assets/popups/drive.png";
+import firefoxImage from "@/assets/popups/firefox.png";
+import nortonImage from "@/assets/popups/norton.png";
+import officeImage from "@/assets/popups/office.png";
+import openofficeImage from "@/assets/popups/open-office.png";
+import linuxImage from "@/assets/popups/linux.png";
+import gimpImage from "@/assets/popups/gimp.png";
+import vlcImage from "@/assets/popups/vlc.png";
+import updateImage from "@/assets/popups/update.png";
+
+import TuxGun from "./popup/TuxGun";
+import explosion from "@/assets/sounds/explosion.wav";
+
+const LaserGame = () => {
+    const { popupList, setPopupList, gameInterval, setGameInterval, sanityLeft, setSanityLeft } = useLaserGame();
+    const [timer, setTimer] = useState(0);
+    const [gameActive, setGameActive] = useState(true);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+    const playExplosionSound = () => {
+        const audio = new Audio(explosion);
+        audio.play();
+    }
+
+    useEffect(() => {
+        setSanityLeft(-sanityLeft);
+        setSanityLeft(1000);
+
+        // Start timer
+        timerRef.current = setInterval(() => {
+            setTimer(prev => prev + 0.01);
+        }, 10);
+
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (sanityLeft <= 0 && gameActive) {
+            setGameActive(false);
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+            clearInterval(gameInterval);
+            setPopupList([]);
+            playExplosionSound();
+        }
+    }, [sanityLeft, gameActive]);
+
+    const [availablePopups, setAvailablePopups] = useState<LaserGamePopupType[]>([
+        {
+            id: 1,
+            height: 200,
+            width: 350,
+            title: "Pack Office",
+            desc: "Ta licence office arrive à expiration, renouvèle la vite !",
+            isEvil: true,
+            image: officeImage
+        },
+        {
+            id: 2,
+            height: 200,
+            width: 350,
+            title: "Windows Update",
+            desc: "Votre système d'exploitation a besoin de se mettre à jour.",
+            isEvil: true,
+            image: updateImage
+        },
+        {
+            id: 3,
+            height: 200,
+            width: 350,
+            title: "Norton 360",
+            desc: "Votre système n'est pas protégé, installez Norton 360 maintenant !",
+            isEvil: true,
+            image: nortonImage
+        },
+        {
+            id: 4,
+            height: 200,
+            width: 350,
+            title: "Google Drive",
+            desc: "Votre espacee de stockage est presque saturé ! Augmentez sa taille en souscrivant à un abonnement.",
+            isEvil: true,
+            image: driveImage
+        },
+        {
+            id: 5,
+            height: 200,
+            width: 350,
+            title: "Linux",
+            desc: "Rejoignez des millions d'utilisateurs et optez pour l'OS open source le plus populaire !",
+            isEvil: false,
+            image: linuxImage
+        },
+        {
+            id: 6,
+            height: 200,
+            width: 350,
+            title: "Open Office",
+            desc: "Une alternative gratuite et open source à Microsoft Office.",
+            isEvil: false,
+            image: openofficeImage
+        },
+        {
+            id: 7,
+            height: 200,
+            width: 350,
+            title: "VLC Media Player",
+            desc: "Un lecteur multimédia gratuit et open source qui prend en charge une large gamme de formats audio et vidéo.",
+            isEvil: false,
+            image: vlcImage
+        },
+        {
+            id: 8,
+            height: 200,
+            width: 350,
+            title: "GIMP",
+            desc: "Un logiciel de retouche d'image gratuit et open source, souvent comparé à Adobe Photoshop.",
+            isEvil: false,
+            image: gimpImage
+        },
+        {
+            id: 9,
+            height: 200,
+            width: 350,
+            title: "Mozilla Firefox",
+            desc: "Un navigateur web open source axé sur la confidentialité et la personnalisation.",
+            isEvil: false,
+            image: firefoxImage
+        },
+        {
+            id: 10,
+            height: 200,
+            width: 350,
+            title: "Suite Adobe",
+            desc: "Optez pour une licence professionnelle pour accéder à l'ensemble des outils créatifs d'Adobe.",
+            isEvil: true,
+            image: adobeImage
+        },
+        {
+            id: 11,
+            height: 200,
+            width: 350,
+            title: "IOS",
+            desc: "Découvrez l'univers Apple avec iOS, le système d'exploitation mobile le plus fermé au monde.",
+            isEvil: true,
+            image: appleImage
+        },
+        {
+            id: 11,
+            height: 200,
+            width: 350,
+            title: "React",
+            desc: "Librairie JavaScript open-source pour construire des interfaces utilisateur interactives.",
+            isEvil: false,
+            image: reactImage
+        }
+    ])
+
+    const selectRandomPopup = () => {
+        if (availablePopups.length === 0) return null;
+        const randomIndex = Math.floor(Math.random() * availablePopups.length);
+        return { ...availablePopups[randomIndex] };
+    }
+
+    let timeElapsed = 0;
+
+    let index = 1;
+
+    //loop every second unitl sanityLeft is 0
+    const gameLoop = () => {
+        let meanPopup = 0.5;
+        let timeToDisappear = 6;
+        let timeToAttack = 4;
+        let damage = 50;
+
+        setGameInterval(setInterval(() => {
+            timeElapsed += 1;
+
+            let popupCount = Math.floor(meanPopup);
+            //get random between 0 and 1, if less than decimal part of meanPopup, add 1 to popupCount
+            const decimalPart = meanPopup - Math.floor(meanPopup);
+            if (Math.random() < decimalPart) {
+                popupCount += 1;
+            }
+
+            for (let i = 0; i < popupCount; i++) {
+                const newPopup = selectRandomPopup();
+                if (newPopup) {
+                    const activePopup: ActiveLaserGamePopup = {
+                        ...newPopup,
+                        x: Math.random() * (window.innerWidth - newPopup.width - 200),
+                        y: Math.random() * (window.innerHeight - newPopup.height - 250),
+                        pointLoss: newPopup.isEvil ? damage : -damage,
+                        actionDelay: newPopup.isEvil ? timeToAttack : timeToDisappear,
+                        id: index
+                    }
+                    index++;
+                    setPopupList((prev) => [...prev, activePopup]);
+                }
+            }
+            
+            if(timeElapsed!= 0 && timeElapsed % 10 == 0) {
+                meanPopup += 0.25;
+                timeToDisappear = Math.max(2, timeToDisappear + 0.25);
+                timeToAttack = Math.max(1, timeToAttack - 0.5);
+                damage += 10;
+            }
+            
+            //end game if sanityLeft is 0
+            if (sanityLeft <= 0) {
+                clearInterval(gameInterval);
+            }
+        }, 1000));
+    }
+
+    useEffect(() => {
+        
+        gameLoop();
+    }, []);
+
+    return (
+        <>
+            <div>
+                <div>
+                    Sanity left : {sanityLeft}
+                </div>
+                <div>
+                    Timer : {timer.toFixed(2)}s
+                </div>
+            </div>
+            {popupList.map((popup) => (
+                <LaserGamePopup
+                    key={`popup-${popup.id}`}
+                    popup={popup}
+                />
+            ))}
+            {!gameActive && (
+                <div className="text-2xl font-bold text-red-500">
+                    Game Over! Final Score: {timer.toFixed(2)}s
+                </div>
+            )}
+            
+            <TuxGun />
+        </>
+    )
+}
+
+export default LaserGame;

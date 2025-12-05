@@ -73,6 +73,7 @@
     @apply bg-background text-foreground font-pixel;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+    list-style-type: none;
   }
 }
 
