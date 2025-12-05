@@ -25,8 +25,7 @@ const Index = () => {
       title: "La zerguèm de la nuit",
       component: LaserGame,
       onClose: () => {
-        if (popupList.length > 0)
-          setPopupList([]);
+        if (popupList.length > 0) setPopupList([]);
         clearInterval(gameInterval);
       },
       height: 90,
@@ -39,18 +38,18 @@ const Index = () => {
       height: 85,
     },
     I: {
-      title: "nird.exe - Réseau Inclusif",
+      title: "nird.exe - Inclusion Numérique",
       component: InclusiveGame,
     },
     R: {
-      title: "nird.exe - Atelier Réparation",
+      title: "nird.exe - Responsabilité Numérique",
       component: ResponsibleGame,
     },
     D: {
-      title: "nird.exe - Sobriété Énergétique",
+      title: "nird.exe - Durabilité Numérique",
       component: DurableGame,
-    }
-  }
+    },
+  };
 
   const [activeGame, setActiveGame] = useState<GameSlot>(null);
   const [completedGames, setCompletedGames] = useState<Set<GameSlot>>(
@@ -192,7 +191,7 @@ const Index = () => {
           rel="noopener noreferrer"
           className="pixel-button px-6 py-4 bg-terminal border-4 border-forest-light text-forest-light hover:bg-forest-light hover:text-terminal transition-colors text-[10px] font-bold uppercase tracking-wider shadow-pixel"
         >
-          [ Rejoindre NIRD ]
+          [ En apprendre plus sur le NIRD ]
         </a>
       </footer>
     </main>
