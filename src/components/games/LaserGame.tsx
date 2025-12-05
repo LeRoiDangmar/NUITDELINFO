@@ -5,10 +5,43 @@ import { useLaserGame } from "../context/LaserGameContext";
 import LaserGamePopup from "./popup/LaserGamePopup";
 
 import reactImage from "@/assets/popups/react.png";
+import { set } from "date-fns";
+import TuxGun from "./popup/TuxGun";
 
 
 const LaserGame = () => {
-    const { popupList, setPopupList, gameInterval, setGameInterval, sanityLeft } = useLaserGame();
+    const { popupList, setPopupList, gameInterval, setGameInterval, sanityLeft, setSanityLeft } = useLaserGame();
+    const [timer, setTimer] = useState(0);
+    const [gameActive, setGameActive] = useState(true);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+
+    useEffect(() => {
+        setSanityLeft(-sanityLeft);
+        setSanityLeft(100);
+
+        // Start timer
+        timerRef.current = setInterval(() => {
+            setTimer(prev => prev + 0.01);
+        }, 10);
+
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (sanityLeft <= 0 && gameActive) {
+            setGameActive(false);
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+                clearInterval(gameInterval);
+                setPopupList([]);
+            }
+        }
+    }, [sanityLeft, gameActive]);
 
     const [availablePopups, setAvailablePopups] = useState<LaserGamePopupType[]>([
         {
@@ -127,7 +160,7 @@ const LaserGame = () => {
         setGameInterval(setInterval(() => {
             timeElapsed += 1;
             //every 2 seconds add a new popup
-            if (timeElapsed % 3 === 0) {
+            if (timeElapsed % 1 === 0) {
                 const newPopup = selectRandomPopup();
                 if (newPopup) {
                     const activePopup: ActiveLaserGamePopup = {
@@ -135,7 +168,7 @@ const LaserGame = () => {
                         x: Math.random() * (window.innerWidth - newPopup.width),
                         y: Math.random() * (window.innerHeight - newPopup.height),
                         pointLoss: newPopup.isEvil ? 50 : -30,
-                        actionDelay: 4,
+                        actionDelay: 3,
                         id: index
                     }
                     index++;
@@ -151,20 +184,35 @@ const LaserGame = () => {
     }
 
     useEffect(() => {
+        
         gameLoop();
+
+        
     }, []);
 
     return (
         <>
-        <div>
-            Laser Game Active : {sanityLeft}
-        </div>
+            <div>
+                <div>
+                    Sanity left : {sanityLeft}
+                </div>
+                <div>
+                    Timer : {timer.toFixed(2)}s
+                </div>
+            </div>
             {popupList.map((popup) => (
                 <LaserGamePopup
                     key={`popup-${popup.id}`}
                     popup={popup}
                 />
             ))}
+            {!gameActive && (
+                <div className="text-2xl font-bold text-red-500">
+                    Game Over! Final Score: {timer.toFixed(2)}s
+                </div>
+            )}
+            
+            <TuxGun />
         </>
     )
 }
