@@ -51,6 +51,10 @@ const Index = () => {
       title: "nird.exe - Durabilité Numérique",
       component: DurableGame,
     },
+    M: {
+      title: "Music Visualizer",
+      component: () => null,
+    },
   };
 
   const [activeGame, setActiveGame] = useState<GameSlot>(null);
@@ -72,6 +76,10 @@ const Index = () => {
   }, [isUnlocked, reset]);
 
   const handleSlotClick = (slot: GameSlot) => {
+    if (slot === "M") {
+      window.location.href = "/NUITDELINFO/graph";
+      return;
+    }
     setActiveGame(slot);
   };
 

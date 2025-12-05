@@ -3,6 +3,7 @@ import { motion, Reorder } from "framer-motion";
 import InventorySlot from "./InventorySlot";
 import { GameSlot } from "@/types/Types";
 import laserGameImage from "@/assets/laser.png";
+import musicImage from "@/assets/sound.png";
 
 interface InventoryBarProps {
   onSlotClick: (slot: GameSlot) => void;
@@ -72,11 +73,13 @@ const initialSlots = [
     color: "#f87171",
   },
   {
-    id: "empty-4",
-    letter: null,
-    label: null,
-    description: null,
-    color: "#f87171",
+    id: "slot-M",
+    letter: "M",
+    label: "MUSIQUE",
+    description:
+      "Visualisation de piste audio.",
+    color: "aliceblue",
+    image: musicImage,
   },
 ];
 

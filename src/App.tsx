@@ -21,7 +21,7 @@ const App = () => (
             <Route path="/NUITDELINFO" element={<Index />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
-            <Route path="/NUITDELINFO/visualizer" element={<Graph />} />
+            <Route path="/NUITDELINFO/graph" element={<Graph />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
