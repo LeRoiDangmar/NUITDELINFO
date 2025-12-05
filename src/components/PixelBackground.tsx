@@ -1,4 +1,4 @@
-import villageBackground from "@/assets/village-background.png";
+import villageBackground from "@/assets/background.png";
 
 const PixelBackground = () => {
   return (
