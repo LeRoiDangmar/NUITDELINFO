@@ -90,11 +90,11 @@ const EXCLUSION_TYPES = [
 
 const CONFIG = {
   spawnRate: 1500,
-  victoryScore: 15,
+  victoryScore: 10,
   exclusionSpeed: 0.015,
 };
 
-const InclusiveGame = () => {
+const InclusiveGame = ({ onComplete }: InclusiveGameProps) => {
   const [gameState, setGameState] = useState<GameState>("idle");
   const [users, setUsers] = useState<UserRequest[]>([]);
   const [score, setScore] = useState(0);
@@ -386,10 +386,10 @@ const InclusiveGame = () => {
               Chacun dispose de l'outil adapté.
             </p>
             <button
-              onClick={startGame}
+              onClick={onComplete}
               className="border border-white/30 text-white px-6 py-2 rounded-full text-xs hover:bg-white/10 tracking-widest"
             >
-              Rejouer
+              Continuer
             </button>
           </motion.div>
         )}
