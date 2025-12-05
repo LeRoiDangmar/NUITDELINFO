@@ -204,6 +204,7 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
     const newEnemies: Enemy[] = [];
     
     for (let i = 0; i < enemyCount; i++) {
+      const startY = Math.random() * -35;
       const newEnemy: Enemy = {
         id: Date.now().toString() + Math.random() + i,
         company,
@@ -211,7 +212,7 @@ const CodeLiberationGame = ({ onComplete }: CodeLiberationGameProps) => {
         word: OPEN_SOURCE_WORDS[
           Math.floor(Math.random() * OPEN_SOURCE_WORDS.length)
         ],
-        position: { x: (i + 1) * 25, y: 0 },
+        position: { x: (i + 1) * 25, y: startY },
         speed: 0.20 + wave * 0.02 + subWave * 0.01,
       };
       newEnemies.push(newEnemy);
