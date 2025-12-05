@@ -7,9 +7,6 @@ import LaserGamePopup from "./popup/LaserGamePopup";
 import reactImage from "@/assets/popups/react.png";
 
 
-interface LaserProps {
-}
-
 const LaserGame = () => {
     const { popupList, setPopupList, gameInterval, setGameInterval, sanityLeft } = useLaserGame();
 
@@ -118,7 +115,7 @@ const LaserGame = () => {
     const selectRandomPopup = () => {
         if (availablePopups.length === 0) return null;
         const randomIndex = Math.floor(Math.random() * availablePopups.length);
-        return availablePopups[randomIndex];
+        return { ...availablePopups[randomIndex] };
     }
 
     let timeElapsed = 0;
@@ -130,7 +127,7 @@ const LaserGame = () => {
         setGameInterval(setInterval(() => {
             timeElapsed += 1;
             //every 2 seconds add a new popup
-            if (timeElapsed % 2 === 0) {
+            if (timeElapsed % 3 === 0) {
                 const newPopup = selectRandomPopup();
                 if (newPopup) {
                     const activePopup: ActiveLaserGamePopup = {
@@ -138,12 +135,12 @@ const LaserGame = () => {
                         x: Math.random() * (window.innerWidth - newPopup.width),
                         y: Math.random() * (window.innerHeight - newPopup.height),
                         pointLoss: newPopup.isEvil ? 50 : -30,
-                        actionDelay: 3,
+                        actionDelay: 4,
                         id: index
                     }
                     index++;
                     setPopupList((prev) => [...prev, activePopup]);
-                }
+                }            
             }
             
             //end game if sanityLeft is 0

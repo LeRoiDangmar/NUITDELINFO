@@ -17,7 +17,10 @@ interface LaserGameContextType {
 const LaserGameContext = createContext<LaserGameContextType | undefined>(undefined);
 
 export const LaserGameProvider = ({ children }: { children: ReactNode }) => {
-  const [sanityLeft, setSanityLeft] = useState(1000);
+  const [sanityLeft, setSanityLeftState] = useState(1000);
+  const setSanityLeft = (delta: number) => {
+    setSanityLeftState(prev => prev + delta);
+  };
   const [isGameActive, setIsGameActive] = useState(false);
   const [popupList, setPopupList] = useState<ActiveLaserGamePopup[]>([])
 

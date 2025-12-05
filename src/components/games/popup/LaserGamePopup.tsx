@@ -15,14 +15,17 @@ const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
 
     const handleCloseClick = () => {
         if (!popup.isEvil)
-            setSanityLeft(sanityLeft + popup.pointLoss);
+            setSanityLeft(popup.pointLoss);
         handleDestroy();
     }
 
     useEffect(() => {
+        console.log("Popup mounted, will destroy in", popup.actionDelay, "seconds");
         const timeout = setTimeout(() => {
+            console.log("I'm destroying myself");
             if (popup.isEvil) {
-                setSanityLeft(sanityLeft - popup.pointLoss);
+                console.log("Losing sanity:", popup.pointLoss);
+                setSanityLeft(-popup.pointLoss);
             }
             handleDestroy();
         }, popup.actionDelay * 1000);
