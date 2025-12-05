@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import PixelBackground from "@/components/PixelBackground";
 import InventoryBar from "@/components/InventoryBar";
 import GameModal from "@/components/GameModal";
-import NumericalGame from "@/components/games/NumericalGame";
+import CodeLiberationGame from "@/components/games/CodeLiberationGame";
 import InclusiveGame from "@/components/games/InclusiveGame";
 import ResponsibleGame from "@/components/games/ResponsibleGame";
 import DurableGame from "@/components/games/DurableGame";
@@ -26,8 +26,8 @@ const gameConfig = {
   },
 
   N: {
-    title: "nird.exe - Résistance Numérique",
-    component: NumericalGame,
+    title: "nird.exe - Code Liberation",
+    component: CodeLiberationGame,
   },
   I: {
     title: "nird.exe - Réseau Inclusif",
