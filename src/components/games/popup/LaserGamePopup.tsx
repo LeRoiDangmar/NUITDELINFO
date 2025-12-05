@@ -17,6 +17,7 @@ const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
     const { setPopupList, setSanityLeft, sanityLeft } = useLaserGame();
     const [isVisible, setIsVisible] = useState(false);
     const [disappearingType, setDisappearingType] = useState<'none' | 'good' | 'bad'>('none');
+    const [loadingProgress, setLoadingProgress] = useState(100);
 
     const badSoundList = [hitHurt_1, hitHurt_2, hitHurt_3, hitHurt_4];
     const goodSoundList = [synth_1, synth_2, synth_3];
@@ -51,6 +52,21 @@ const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
     useEffect(() => {
         // Trigger appearing animation
         setTimeout(() => setIsVisible(true), 10);
+
+        // Animate loading bar
+        const startTime = Date.now();
+        const duration = popup.actionDelay * 1000;
+
+        const updateProgress = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.max(0, 100 - (elapsed / duration) * 100);
+            setLoadingProgress(progress);
+            
+            if (progress > 0) {
+                requestAnimationFrame(updateProgress);
+            }
+        };
+        requestAnimationFrame(updateProgress);
 
         const timeout = setTimeout(() => {
             if (popup.isEvil) {
@@ -105,6 +121,12 @@ const LaserGamePopup = ({ popup }: { popup: ActiveLaserGamePopup }) => {
                     {popup.desc}
                 </div>
 
+            </div>
+            <div className={styles.loadingBar}>
+                <div 
+                    className={styles.loadingProgress}
+                    style={{ width: `${loadingProgress}px` }}
+                ></div>
             </div>
         </div>
     )

@@ -5,7 +5,18 @@ import { useLaserGame } from "../context/LaserGameContext";
 import LaserGamePopup from "./popup/LaserGamePopup";
 
 import reactImage from "@/assets/popups/react.png";
-import { set } from "date-fns";
+import appleImage from "@/assets/popups/apple.png";
+import adobeImage from "@/assets/popups/adobe.png";
+import driveImage from "@/assets/popups/drive.png";
+import firefoxImage from "@/assets/popups/firefox.png";
+import nortonImage from "@/assets/popups/norton.png";
+import officeImage from "@/assets/popups/office.png";
+import openofficeImage from "@/assets/popups/open-office.png";
+import linuxImage from "@/assets/popups/linux.png";
+import gimpImage from "@/assets/popups/gimp.png";
+import vlcImage from "@/assets/popups/vlc.png";
+import updateImage from "@/assets/popups/update.png";
+
 import TuxGun from "./popup/TuxGun";
 import explosion from "@/assets/sounds/explosion.wav";
 
@@ -22,7 +33,7 @@ const LaserGame = () => {
 
     useEffect(() => {
         setSanityLeft(-sanityLeft);
-        setSanityLeft(200);
+        setSanityLeft(1000);
 
         // Start timer
         timerRef.current = setInterval(() => {
@@ -56,7 +67,7 @@ const LaserGame = () => {
             title: "Pack Office",
             desc: "Ta licence office arrive à expiration, renouvèle la vite !",
             isEvil: true,
-            image: reactImage
+            image: officeImage
         },
         {
             id: 2,
@@ -65,7 +76,7 @@ const LaserGame = () => {
             title: "Windows Update",
             desc: "Votre système d'exploitation a besoin de se mettre à jour.",
             isEvil: true,
-            image: reactImage
+            image: updateImage
         },
         {
             id: 3,
@@ -74,7 +85,7 @@ const LaserGame = () => {
             title: "Norton 360",
             desc: "Votre système n'est pas protégé, installez Norton 360 maintenant !",
             isEvil: true,
-            image: reactImage
+            image: nortonImage
         },
         {
             id: 4,
@@ -83,7 +94,7 @@ const LaserGame = () => {
             title: "Google Drive",
             desc: "Votre espacee de stockage est presque saturé ! Augmentez sa taille en souscrivant à un abonnement.",
             isEvil: true,
-            image: reactImage
+            image: driveImage
         },
         {
             id: 5,
@@ -92,7 +103,7 @@ const LaserGame = () => {
             title: "Linux",
             desc: "Rejoignez des millions d'utilisateurs et optez pour l'OS open source le plus populaire !",
             isEvil: false,
-            image: reactImage
+            image: linuxImage
         },
         {
             id: 6,
@@ -101,7 +112,7 @@ const LaserGame = () => {
             title: "Open Office",
             desc: "Une alternative gratuite et open source à Microsoft Office.",
             isEvil: false,
-            image: reactImage
+            image: openofficeImage
         },
         {
             id: 7,
@@ -110,7 +121,7 @@ const LaserGame = () => {
             title: "VLC Media Player",
             desc: "Un lecteur multimédia gratuit et open source qui prend en charge une large gamme de formats audio et vidéo.",
             isEvil: false,
-            image: reactImage
+            image: vlcImage
         },
         {
             id: 8,
@@ -119,7 +130,7 @@ const LaserGame = () => {
             title: "GIMP",
             desc: "Un logiciel de retouche d'image gratuit et open source, souvent comparé à Adobe Photoshop.",
             isEvil: false,
-            image: reactImage
+            image: gimpImage
         },
         {
             id: 9,
@@ -128,7 +139,7 @@ const LaserGame = () => {
             title: "Mozilla Firefox",
             desc: "Un navigateur web open source axé sur la confidentialité et la personnalisation.",
             isEvil: false,
-            image: reactImage
+            image: firefoxImage
         },
         {
             id: 10,
@@ -137,7 +148,7 @@ const LaserGame = () => {
             title: "Suite Adobe",
             desc: "Optez pour une licence professionnelle pour accéder à l'ensemble des outils créatifs d'Adobe.",
             isEvil: true,
-            image: reactImage
+            image: adobeImage
         },
         {
             id: 11,
@@ -146,6 +157,15 @@ const LaserGame = () => {
             title: "IOS",
             desc: "Découvrez l'univers Apple avec iOS, le système d'exploitation mobile le plus fermé au monde.",
             isEvil: true,
+            image: appleImage
+        },
+        {
+            id: 11,
+            height: 200,
+            width: 350,
+            title: "React",
+            desc: "Librairie JavaScript open-source pour construire des interfaces utilisateur interactives.",
+            isEvil: false,
             image: reactImage
         }
     ])
@@ -183,7 +203,7 @@ const LaserGame = () => {
                     const activePopup: ActiveLaserGamePopup = {
                         ...newPopup,
                         x: Math.random() * (window.innerWidth - newPopup.width),
-                        y: Math.random() * (window.innerHeight - newPopup.height),
+                        y: (Math.random() * window.innerHeight - 150) - newPopup.height + 50,
                         pointLoss: newPopup.isEvil ? damage : -damage,
                         actionDelay: newPopup.isEvil ? timeToAttack : timeToDisappear,
                         id: index
