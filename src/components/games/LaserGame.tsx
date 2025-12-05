@@ -7,7 +7,7 @@ import LaserGamePopup from "./popup/LaserGamePopup";
 import reactImage from "@/assets/popups/react.png";
 import { set } from "date-fns";
 import TuxGun from "./popup/TuxGun";
-
+import explosion from "@/assets/sounds/explosion.wav";
 
 const LaserGame = () => {
     const { popupList, setPopupList, gameInterval, setGameInterval, sanityLeft, setSanityLeft } = useLaserGame();
@@ -15,9 +15,14 @@ const LaserGame = () => {
     const [gameActive, setGameActive] = useState(true);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+    const playExplosionSound = () => {
+        const audio = new Audio(explosion);
+        audio.play();
+    }
+
     useEffect(() => {
         setSanityLeft(-sanityLeft);
-        setSanityLeft(1000);
+        setSanityLeft(200);
 
         // Start timer
         timerRef.current = setInterval(() => {
@@ -36,9 +41,10 @@ const LaserGame = () => {
             setGameActive(false);
             if (timerRef.current) {
                 clearInterval(timerRef.current);
-                clearInterval(gameInterval);
-                setPopupList([]);
             }
+            clearInterval(gameInterval);
+            setPopupList([]);
+            playExplosionSound();
         }
     }, [sanityLeft, gameActive]);
 
@@ -171,8 +177,6 @@ const LaserGame = () => {
                 popupCount += 1;
             }
 
-            console.log(`Spawning ${popupCount} popups (mean: ${meanPopup}, timeToDisappear: ${timeToDisappear}, timeToAttack: ${timeToAttack}, damage: ${damage})`);
-
             for (let i = 0; i < popupCount; i++) {
                 const newPopup = selectRandomPopup();
                 if (newPopup) {
@@ -191,7 +195,7 @@ const LaserGame = () => {
             
             if(timeElapsed!= 0 && timeElapsed % 10 == 0) {
                 meanPopup += 0.25;
-                timeToDisappear = Math.max(2, timeToDisappear - 0.5);
+                timeToDisappear = Math.max(2, timeToDisappear + 0.25);
                 timeToAttack = Math.max(1, timeToAttack - 0.5);
                 damage += 10;
             }
