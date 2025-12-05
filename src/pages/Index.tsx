@@ -96,12 +96,9 @@ const Index = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 100 }}
         >
-          <h1 className="text-lg md:text-2xl text-forest-light glow-forest mb-2">
-            LE VILLAGE NUMÉRIQUE
+          <h1 className="text-lg md:text-2xl text-forest-dark glow-forest mb-2">
+            Le village numérique résistant
           </h1>
-          <h2 className="text-xs md:text-sm text-screen glow-screen">
-            RÉSISTANT
-          </h2>
         </motion.div>
       </header>
 
